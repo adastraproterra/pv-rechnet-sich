@@ -10,6 +10,7 @@ const artikel = defineCollection({
     dateModified: z.string(),
     about: z.array(z.string()).default([]),
     rechnerUrl: z.string().optional(),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
   }),
 });
 

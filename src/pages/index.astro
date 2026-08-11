@@ -1,22 +1,21 @@
 ---
 import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE } from "../config";
-const eintraege = await getCollection("artikel");
+const eintraege = (await getCollection("artikel"))
+  .sort((a, b) => (a.data.datePublished < b.data.datePublished ? 1 : -1));
 ---
-<html lang="de">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{SITE.name} — unabhängige Wirtschaftlichkeit für PV, Speicher & Einspeisung</title>
-  </head>
-  <body>
+<BaseLayout title={`${SITE.name} — unabhängige Wirtschaftlichkeit für PV, Speicher & Einspeisung`} description="Neutrale, nachvollziehbare Rechnungen rund um PV, Batteriespeicher, Einspeisung und dynamische Tarife. Annahmen offen, keine Kaufempfehlung.">
+  <div class="prose">
     <h1>{SITE.name}</h1>
-    <p>Unabhängig gerechnet: PV, Speicher, Einspeisung und dynamische Tarife — Annahmen offen, keine Kaufempfehlung.</p>
-    <h2>Artikel</h2>
-    <ul>
-      {eintraege.map(e => (
-        <li><a href={`/artikel/${e.id.replace(/\.md$/, "")}`}>{e.data.title}</a></li>
-      ))}
-    </ul>
-  </body>
-</html>
+    <p>Unabhängig gerechnet: PV, Speicher, Einspeisung und dynamische Tarife — Annahmen offen, jede Zahl nachvollziehbar, keine Kaufempfehlung.</p>
+  </div>
+  <ul class="post-list">
+    {eintraege.map((e) => (
+      <li>
+        <a href={`/artikel/${e.id.replace(/\.md$/, "")}`}>{e.data.title}</a>
+        <p>{e.data.description}</p>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

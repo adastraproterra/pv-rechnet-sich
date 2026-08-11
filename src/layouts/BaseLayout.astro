@@ -1,4 +1,5 @@
 ---
+import "../styles/global.css";
 import { SITE } from "../config";
 const { title, description } = Astro.props;
 const site = SITE.domain;
@@ -25,6 +26,15 @@ const sameAs = [SITE.github, SITE.linkedin].filter(Boolean);
     })} />
   </head>
   <body>
-    <slot />
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">{SITE.name}</a>
+        <span class="tagline">unabhängig gerechnet · Annahmen offen</span>
+      </div>
+    </header>
+    <main class="content"><slot /></main>
+    <footer class="site-footer">
+      <div class="wrap">{SITE.name} — neutrale Wirtschaftlichkeitsrechnung für PV, Speicher und Einspeisung. Keine Kaufempfehlung, keine Steuer- oder Rechtsberatung.</div>
+    </footer>
   </body>
 </html>

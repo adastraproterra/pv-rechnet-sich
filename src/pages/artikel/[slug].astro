@@ -13,23 +13,35 @@ const { Content } = await render(e);
 const slug = e.id.replace(/\.md$/, "");
 const site = SITE.domain;
 const rechner = e.data.rechnerUrl ?? SITE.rechnerUrl;
+const faq = e.data.faq ?? [];
 ---
 <BaseLayout title={e.data.title} description={e.data.description}>
   <script type="application/ld+json" set:html={JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Article",
+    "@context": "https://schema.org", "@type": "Article",
     "headline": e.data.title,
-    "datePublished": e.data.datePublished,
-    "dateModified": e.data.dateModified,
-    "author": { "@id": `${site}/#person` },
-    "publisher": { "@id": `${site}/#org` },
-    "about": e.data.about,
-    "mainEntityOfPage": `${site}/artikel/${slug}/`
+    "datePublished": e.data.datePublished, "dateModified": e.data.dateModified,
+    "author": { "@id": `${site}/#person` }, "publisher": { "@id": `${site}/#org` },
+    "about": e.data.about, "mainEntityOfPage": `${site}/artikel/${slug}/`
   })} />
-  <article>
+  {faq.length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org", "@type": "FAQPage",
+      "mainEntity": faq.map((f) => ({ "@type": "Question", "name": f.q,
+        "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
+    })} />
+  )}
+  <article class="prose">
     <h1>{e.data.title}</h1>
     <Content />
+    {faq.length > 0 && (
+      <section class="faq">
+        <h2>Häufige Fragen</h2>
+        {faq.map((f) => (
+          <details><summary>{f.q}</summary><p>{f.a}</p></details>
+        ))}
+      </section>
+    )}
     <hr />
-    <p><em>Von {SITE.author} · Veröffentlicht {e.data.datePublished} · zuletzt aktualisiert {e.data.dateModified} · <a href={rechner}>Rechne deinen eigenen Fall durch</a></em></p>
+    <p class="article-meta">Von {SITE.author} · Veröffentlicht {e.data.datePublished} · zuletzt aktualisiert {e.data.dateModified} · <a href={rechner}>Rechne deinen eigenen Fall durch</a></p>
   </article>
 </BaseLayout>
