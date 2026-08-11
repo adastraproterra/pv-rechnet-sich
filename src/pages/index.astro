@@ -1,10 +1,18 @@
 ---
 import { getCollection } from "astro:content";
+import { SITE } from "../config";
 const eintraege = await getCollection("artikel");
 ---
 <html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{SITE.name} — unabhängige Wirtschaftlichkeit für PV, Speicher & Einspeisung</title>
+  </head>
   <body>
-    <h1>Artikel</h1>
+    <h1>{SITE.name}</h1>
+    <p>Unabhängig gerechnet: PV, Speicher, Einspeisung und dynamische Tarife — Annahmen offen, keine Kaufempfehlung.</p>
+    <h2>Artikel</h2>
     <ul>
       {eintraege.map(e => (
         <li><a href={`/artikel/${e.id.replace(/\.md$/, "")}`}>{e.data.title}</a></li>
