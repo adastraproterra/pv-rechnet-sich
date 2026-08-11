@@ -1,0 +1,30 @@
+---
+import { SITE } from "../config";
+const { title, description } = Astro.props;
+const site = SITE.domain;
+const sameAs = [SITE.github, SITE.linkedin].filter(Boolean);
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        { "@type": "Organization", "@id": `${site}/#org`, "name": SITE.name,
+          "url": `${site}/`, "knowsAbout": SITE.knowsAbout,
+          "founder": { "@id": `${site}/#person` }, "sameAs": sameAs },
+        { "@type": "Person", "@id": `${site}/#person`, "name": SITE.author,
+          "url": `${site}/ueber/`, "jobTitle": SITE.jobTitle, "sameAs": sameAs },
+        { "@type": "WebSite", "@id": `${site}/#website`, "url": `${site}/`,
+          "name": SITE.name, "publisher": { "@id": `${site}/#org` }, "inLanguage": "de-DE" }
+      ]
+    })} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

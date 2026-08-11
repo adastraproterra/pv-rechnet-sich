@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { SITE } from "../../config";
+
+export async function getStaticPaths() {
+  const eintraege = await getCollection("artikel");
+  return eintraege.map((e) => ({ params: { slug: e.id.replace(/\.md$/, "") }, props: { e } }));
+}
+
+const { e } = Astro.props;
+const { Content } = await render(e);
+const slug = e.id.replace(/\.md$/, "");
+const site = SITE.domain;
+const rechner = e.data.rechnerUrl ?? SITE.rechnerUrl;
+---
+<BaseLayout title={e.data.title} description={e.data.description}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": e.data.title,
+    "datePublished": e.data.datePublished,
+    "dateModified": e.data.dateModified,
+    "author": { "@id": `${site}/#person` },
+    "publisher": { "@id": `${site}/#org` },
+    "about": e.data.about,
+    "mainEntityOfPage": `${site}/artikel/${slug}/`
+  })} />
+  <article>
+    <h1>{e.data.title}</h1>
+    <Content />
+    <hr />
+    <p><em>Von {SITE.author} · Veröffentlicht {e.data.datePublished} · zuletzt aktualisiert {e.data.dateModified} · <a href={rechner}>Rechne deinen eigenen Fall durch</a></em></p>
+  </article>
+</BaseLayout>

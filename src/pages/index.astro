@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+const eintraege = await getCollection("artikel");
+---
+<html lang="de">
+  <body>
+    <h1>Artikel</h1>
+    <ul>
+      {eintraege.map(e => (
+        <li><a href={`/artikel/${e.id.replace(/\.md$/, "")}`}>{e.data.title}</a></li>
+      ))}
+    </ul>
+  </body>
+</html>
