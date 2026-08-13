@@ -4,6 +4,7 @@ description: "Brutto ein paar Hundert Euro, netto oft nahe null - warum der Vers
 datePublished: "2026-08-10"
 dateModified: "2026-08-10"
 about: ["Batteriespeicher-Wirtschaftlichkeit", "Strommarkt-Arbitrage"]
+rechnerUrl: "https://qux5vs6qdnjk3e8begdeam.streamlit.app/.streamlit.app"
 ---
 
 **Kurz gesagt: Meist bleiben netto nur etwa 0–100 € pro Jahr übrig. Brutto sind es
